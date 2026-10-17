@@ -172,6 +172,11 @@ dialog::backdrop { background: rgba(0, 0, 0, .55); }
 <div class="wrap" id="home">
   <h1 class="logo">カード遊び場</h1>
   <p class="muted" style="margin:0">大富豪と、ラストワン（色と数字をそろえるゲーム）。CPU とも、友達とも。</p>
+  <div class="panel form" id="invite" hidden style="border-color:var(--accent)">
+    <div><b id="invite-t"></b><div class="small muted">名前を入れて「入る」を押してください。ゲームとルールは部屋をつくった人が決めます。</div></div>
+    <div class="row"><input class="inp" id="iname" maxlength="12" placeholder="なまえ" autocomplete="nickname" style="flex:1 1 160px"><button class="btn acc" id="ijoin">入る</button></div>
+    <p class="small" id="inote" style="margin:0;color:var(--danger)"></p>
+  </div>
   <div class="games" role="group" aria-label="ゲームを選ぶ">
     <button class="game" data-game="daifugo" aria-pressed="true"><span class="mini" id="mini-d"></span><b>大富豪</b><span class="small muted">強いカードを出して、先に手札をなくした人が大富豪。革命・8切り・縛りなど。</span></button>
     <button class="game" data-game="lastone" aria-pressed="false"><span class="mini" id="mini-l"></span><b>ラストワン</b><span class="small muted">色か数字が同じカードを出していく。残り1枚で「ラスト！」と言い忘れると2枚ひく。</span></button>
@@ -1235,6 +1240,7 @@ async function joinRoom(code) {
     R = { role: 'guest', code, kind: game, rules: {}, seats: [], started: false };
     R.link = await Link.guest(code, myKey, onGuestMsg, msg => { if (R && R.role === 'guest') { toast(msg); leaveRoom(); } });
     R.link.send({ t: 'hello', name: myName() });
+    $('#invite').hidden = true; try { history.replaceState(null, '', location.pathname); } catch (e) { }
     $('#net-note').textContent = '';
     showLobby();
   } catch (e) { R = null; $('#net-note').textContent = e.message; }
@@ -1264,7 +1270,11 @@ $('#join-code').addEventListener('keydown', e => { if (e.key === 'Enter') joinRo
   $('#make-room').hidden = false; $('#join-row').hidden = false;
   $('#net-note').textContent = m === 'room' ? '友達と遊ぶときは、このページを友達と共有してから部屋をつくってください。' : '部屋をつくって、招待リンクか部屋番号を友達に送ってください。';
   const j = (location.hash.match(/join=(\d{4})/) || [])[1];
-  if (j) { $('#join-code').value = j; $('#net-note').textContent = `部屋 ${j} に招待されています。名前を入れて「部屋に入る」を押してください。`; }
+  if (j) {
+    $('#join-code').value = j;
+    $('#invite').hidden = false; $('#invite-t').textContent = `部屋 ${j} に招待されています`; $('#iname').value = $('#name').value;
+    $('#ijoin').onclick = async () => { $('#name').value = $('#iname').value; $('#inote').textContent = ''; await joinRoom(j); if (!R) $('#inote').textContent = $('#net-note').textContent; };
+  }
 })();
 
 </script>
