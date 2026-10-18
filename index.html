@@ -131,12 +131,12 @@ label.f { display: grid; gap: 4px; font-size: 13px; color: var(--muted); }
 /* ---- ラストワンのカード ---- */
 .lo { width: 62px; height: 90px; border-radius: 10px; border: 3px solid #fdfaf2; box-shadow: var(--shadow); position: relative; display: block; padding: 0; color: #fff; font-family: var(--f-disp); user-select: none; overflow: hidden; }
 .lo.r { background: var(--c-r); } .lo.b { background: var(--c-b); } .lo.g { background: var(--c-g); } .lo.y { background: var(--c-y); }
-.lo.w { background: conic-gradient(var(--c-r) 0 25%, var(--c-y) 0 50%, var(--c-g) 0 75%, var(--c-b) 0); }
+.lo.w { background: linear-gradient(135deg, var(--c-r) 0 22%, var(--c-y) 22% 44%, var(--c-g) 44% 66%, var(--c-b) 66%); }
 .lo::before { content: ""; position: absolute; inset: 7px; border-radius: 6px; border: 1.5px solid rgba(255, 255, 255, .55); }
 .lo .v { position: absolute; inset: 0; display: grid; place-items: center; font-size: 34px; text-shadow: 0 2px 0 rgba(0, 0, 0, .25); }
 .lo .v.s { font-size: 18px; font-family: var(--f-body); font-weight: 900; }
 .lo .k { position: absolute; top: 4px; left: 6px; font-size: 13px; font-family: var(--f-body); font-weight: 900; }
-.lo.w .v { background: radial-gradient(circle, rgba(0, 0, 0, .35) 0 34%, transparent 35%); }
+.lo.w .v { text-shadow: 0 1px 0 rgba(0, 0, 0, .55), 0 0 6px rgba(0, 0, 0, .45); }
 .lo.back { background: #20242c; }
 .lo.back .v { font-size: 14px; letter-spacing: .1em; color: var(--accent); }
 @media (min-width: 700px) { .lo { width: 74px; height: 106px; } .lo .v { font-size: 40px; } }
